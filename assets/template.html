@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css">
+<style>
+{{CSS}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside>
+    <a href="#" class="brand"><strong>{{TITLE}}</strong></a>
+    <input type="search" id="q" placeholder="Search entities… ( / )" autocomplete="off" aria-label="Search">
+    <select id="kind" aria-label="Kind">
+      <option value="">All kinds</option>
+      <option value="el">Elements</option>
+      <option value="ct">Complex types</option>
+      <option value="st">Simple types</option>
+      <option value="gr">Groups</option>
+      <option value="ag">Attribute groups</option>
+      <option value="at">Attributes</option>
+    </select>
+    <nav id="results"></nav>
+  </aside>
+  <main id="main"></main>
+</div>
+<script type="application/json" id="xsd-data">{{DATA}}</script>
+<script>
+{{JS}}
+</script>
+</body>
+</html>
