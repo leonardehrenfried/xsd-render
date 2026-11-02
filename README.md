@@ -1,4 +1,4 @@
-# xsd-viewer
+# xsd-render
 
 Turns a (large) XML Schema into a single self-contained HTML page documenting every
 complex type, simple type, element, group, attribute group and attribute, with links
@@ -18,11 +18,11 @@ The resolved model is embedded as JSON and rendered on demand in the browser:
 
 ## Installation
 
-    cargo install xsd-viewer
+    cargo install xsd-render
 
 then
 
-    xsd-viewer NeTEx/xsd/NeTEx_publication.xsd -t NeTEx -o netex.html
+    xsd-render NeTEx/xsd/NeTEx_publication.xsd -t NeTEx -o netex.html
 
 ## License
 

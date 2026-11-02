@@ -11,7 +11,7 @@ const APP_JS: &str = include_str!("../assets/app.js");
 const APP_CSS: &str = include_str!("../assets/app.css");
 
 const USAGE: &str = "\
-Usage: xsd-viewer [OPTIONS] <ENTRY.xsd>...
+Usage: xsd-render [OPTIONS] <ENTRY.xsd>...
 
 Parses the given XSD files (following include/import/redefine) and writes a
 single self-contained HTML page documenting all components and their links.
@@ -45,7 +45,7 @@ fn main() -> Result<()> {
                 return Ok(());
             }
             "-V" | "--version" => {
-                println!("xsd-viewer {}", env!("CARGO_PKG_VERSION"));
+                println!("xsd-render {}", env!("CARGO_PKG_VERSION"));
                 return Ok(());
             }
             a if a.starts_with('-') => bail!("unknown option {a}\n\n{USAGE}"),
