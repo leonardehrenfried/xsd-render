@@ -44,6 +44,16 @@ function refList(title, list, open) {
   return `<details${open || list.length <= 40 ? ' open' : ''}><summary>${title} (${list.length})</summary><p class="reflist">${links}</p></details>`;
 }
 
+// Example instance documents (from --examples) that use this component.
+function examples(c) {
+  if (!c.ex || !c.ex.length) return '';
+  const items = c.ex.map(fi => {
+    const rel = D.ex[fi];
+    return `<li><a href="${esc(D.exb + '/' + rel)}" target="_blank" rel="noopener">${esc(decodeURIComponent(rel))}</a></li>`;
+  }).join('');
+  return `<details class="section"${c.ex.length <= 20 ? ' open' : ''}><summary><h3>Examples <small class="muted">(${c.ex.length})</small></h3></summary><ul class="examples">${items}</ul></details>`;
+}
+
 // Used-by references grouped by kind of the referencing component.
 function usedBy(c) {
   if (!c.ub || !c.ub.length) return '';
@@ -277,7 +287,7 @@ function complexBody(i) {
 const PAGES = {
   ct(i) {
     const c = C[i];
-    return header(i) + complexBody(i) + refList('Derived types', c.sub) + usedBy(c);
+    return header(i) + complexBody(i) + refList('Derived types', c.sub) + usedBy(c) + examples(c);
   },
   st(i) {
     const c = C[i];
@@ -289,7 +299,7 @@ const PAGES = {
       ['Union of', c.un ? c.un.map(link).join(', ') : ''],
       ...(c.fa || []).map(([k, v]) => [k, `<code>${esc(v)}</code>`]),
     ]);
-    return h + enumTable(c) + refList('Derived types', c.sub) + usedBy(c);
+    return h + enumTable(c) + refList('Derived types', c.sub) + usedBy(c) + examples(c);
   },
   el(i) {
     const c = C[i];
@@ -309,7 +319,7 @@ const PAGES = {
       if (t.k === 'ct') h += (t.anon ? '<h3>Inline type</h3>' : `<h3>Type ${link(c.t)}</h3><p class="doc">${docHtml(t.d)}</p>`) + complexBody(c.t);
       else h += enumTable(t);
     }
-    return h + usedBy(c);
+    return h + usedBy(c) + examples(c);
   },
   gr(i) {
     const c = C[i];
@@ -355,7 +365,7 @@ function route() {
     main.innerHTML = PAGES[C[i].k](i);
     document.title = `${C[i].n} – ${D.title}`;
   }
-  main.scrollTop = 0;
+  main.parentElement.scrollTop = 0;
   window.scrollTo(0, 0);
 }
 window.addEventListener('hashchange', route);

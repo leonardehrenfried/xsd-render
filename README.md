@@ -15,6 +15,8 @@ The resolved model is embedded as JSON and rendered on demand in the browser:
 - attributes (incl. inherited and attribute groups), enumerations and facets
 - reverse links: used by, derived types, substitution group members
 - search (`/`), kind filter and a file tree in the sidebar
+- links to example instance documents (`--examples <DIR>`, optionally with
+  `--examples-url <URL>` to point the links at e.g. GitHub instead of local paths)
 
 ## Installation
 
@@ -23,6 +25,11 @@ The resolved model is embedded as JSON and rendered on demand in the browser:
 then
 
     xsd-render NeTEx/xsd/NeTEx_publication.xsd -t NeTEx -o netex.html
+
+With examples linked to GitHub:
+
+    xsd-render NeTEx/xsd/NeTEx_publication.xsd -t NeTEx -o netex.html \
+      -e NeTEx/examples -u https://github.com/NeTEx-CEN/NeTEx/blob/master/examples
 
 ## License
 

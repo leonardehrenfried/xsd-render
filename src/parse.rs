@@ -7,6 +7,7 @@ use std::path::{Path, PathBuf};
 use anyhow::{Context, Result};
 use roxmltree::{Document, Node};
 
+use crate::examples::Globals;
 use crate::model::{AttrUse, Component, Occ, Particle, Ref};
 
 pub const XSD_NS: &str = "http://www.w3.org/2001/XMLSchema";
@@ -113,6 +114,7 @@ pub struct Model {
     pub files: Vec<(String, usize)>,
     pub unresolved: BTreeMap<String, usize>,
     pub duplicates: usize,
+    pub globals: Globals,
 }
 
 struct Builder<'a> {
@@ -212,6 +214,16 @@ pub fn build(files: &[SchemaFile]) -> Model {
         .map(|f| (f.rel.clone(), ns_idx(f.tns.as_deref().unwrap_or(""))))
         .collect();
 
+    let mut globals = Globals { elements: HashMap::new(), types: HashMap::new() };
+    for ((space, ns, local), &i) in &b.index {
+        let map = match space {
+            Space::Element => &mut globals.elements,
+            Space::Type => &mut globals.types,
+            _ => continue,
+        };
+        map.insert((ns.clone(), local.clone()), i);
+    }
+
     Model {
         components: b.comps,
         namespaces,
@@ -219,6 +231,7 @@ pub fn build(files: &[SchemaFile]) -> Model {
         files: file_list,
         unresolved: b.unresolved,
         duplicates,
+        globals,
     }
 }
 

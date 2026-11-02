@@ -152,6 +152,9 @@ pub struct Component {
     pub sub: Vec<usize>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub sgm: Vec<usize>,
+    /// example files (indices into the example list) using this component
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub ex: Vec<usize>,
 }
 
 impl Particle {

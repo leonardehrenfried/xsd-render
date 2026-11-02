@@ -1,3 +1,4 @@
+mod examples;
 mod model;
 mod parse;
 
@@ -19,6 +20,11 @@ single self-contained HTML page documenting all components and their links.
 Options:
   -o, --output <FILE>   output file [default: schema.html]
   -t, --title <TITLE>   page title [default: name of the first entry file]
+  -e, --examples <DIR>  scan DIR recursively for XML examples and link them from
+                        the elements and types they use
+  -u, --examples-url <URL>
+                        base URL the example links point to (e.g. the examples
+                        folder on GitHub) [default: path relative to the output]
   -h, --help            print this help
   -V, --version         print the version";
 
@@ -29,17 +35,26 @@ struct Data<'a> {
     nss: &'a [String],
     files: &'a [(String, usize)],
     c: &'a [model::Component],
+    #[serde(skip_serializing_if = "<[_]>::is_empty")]
+    ex: &'a [String],
+    /// base URL or path the example paths are relative to
+    #[serde(skip_serializing_if = "str::is_empty")]
+    exb: &'a str,
 }
 
 fn main() -> Result<()> {
     let mut entries = Vec::new();
     let mut output = PathBuf::from("schema.html");
     let mut title = None;
+    let mut examples = None;
+    let mut examples_url = None;
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "-o" | "--output" => output = args.next().map(PathBuf::from).ok_or_else(|| anyhow::anyhow!("{arg} needs a value"))?,
             "-t" | "--title" => title = Some(args.next().ok_or_else(|| anyhow::anyhow!("{arg} needs a value"))?),
+            "-e" | "--examples" => examples = Some(args.next().map(PathBuf::from).ok_or_else(|| anyhow::anyhow!("{arg} needs a value"))?),
+            "-u" | "--examples-url" => examples_url = Some(args.next().ok_or_else(|| anyhow::anyhow!("{arg} needs a value"))?),
             "-h" | "--help" => {
                 println!("{USAGE}");
                 return Ok(());
@@ -55,6 +70,9 @@ fn main() -> Result<()> {
     if entries.is_empty() {
         bail!("no entry schema given\n\n{USAGE}");
     }
+    if examples_url.is_some() && examples.is_none() {
+        bail!("--examples-url requires --examples");
+    }
     let title = title.unwrap_or_else(|| {
         entries[0]
             .file_stem()
@@ -63,7 +81,17 @@ fn main() -> Result<()> {
     });
 
     let files = parse::load(&entries)?;
-    let model = parse::build(&files);
+    let mut model = parse::build(&files);
+    let (example_base, example_links) = match &examples {
+        Some(dir) => {
+            let out_dir = match output.parent() {
+                Some(p) if !p.as_os_str().is_empty() => p,
+                _ => std::path::Path::new("."),
+            };
+            examples::scan(dir, examples_url.as_deref(), out_dir, &model.globals, &mut model.components)?
+        }
+        None => (String::new(), Vec::new()),
+    };
 
     let mut counts = std::collections::BTreeMap::<&str, usize>::new();
     for c in model.components.iter().filter(|c| !c.anon) {
@@ -86,6 +114,8 @@ fn main() -> Result<()> {
         nss: &model.namespaces,
         files: &model.files,
         c: &model.components,
+        ex: &example_links,
+        exb: &example_base,
     })?
     // keep the JSON from terminating its <script> element
     .replace("</", "<\\/");

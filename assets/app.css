@@ -1,4 +1,4 @@
-:root { --pico-font-size: 93.75%; }
+:root { --pico-font-size: 106.25%; }
 body { margin: 0; }
 .layout { display: grid; grid-template-columns: 22rem minmax(0, 1fr); height: 100vh; }
 aside { overflow-y: auto; padding: 1rem; border-right: 1px solid var(--pico-muted-border-color); }
@@ -9,11 +9,11 @@ aside li { list-style: none; margin: 0; padding: .1rem 0; font-size: .875rem; ov
 aside details { margin-bottom: .25rem; }
 aside details summary { font-size: .875rem; }
 aside details details { margin-left: .75rem; }
-main { overflow-y: auto; padding: 1.5rem 2rem 4rem; }
+main { overflow-y: auto; padding: 1.5rem 0 4rem; }
 @media (max-width: 768px) {
   .layout { grid-template-columns: 1fr; height: auto; }
   aside { max-height: 45vh; border-right: 0; border-bottom: 1px solid var(--pico-muted-border-color); }
-  main { padding: 1rem; }
+  main { padding: 1rem 0; }
 }
 
 .kind { display: inline-block; font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .03em;
@@ -43,3 +43,11 @@ table.xsd tr.sect td { font-weight: 600; background: var(--pico-card-sectioning-
 table.xsd code { padding: .05rem .3rem; }
 table.xsd tr.note td { font-style: italic; color: var(--pico-muted-color); }
 table.xsd td.br { white-space: nowrap; }
+.examples li { font-size: .875rem; font-family: var(--pico-font-family-monospace); list-style: none; }
+.examples { padding-left: 0; }
+/* foldable h3 section: Pico's chevron moved in front of the heading */
+details.section { margin-top: 2.25rem; }
+details.section > summary { display: flex; align-items: center; gap: .5rem; }
+details.section > summary::after { float: none; order: -1; margin: 0; flex: none; width: 1.5rem; height: 1.5rem; background-size: 1.5rem auto; background-position: center; }
+details.section > summary h3 { margin: 0; }
+details.section[open] > summary { margin-bottom: var(--pico-typography-spacing-vertical); }
