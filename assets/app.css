@@ -1,0 +1,45 @@
+:root { --pico-font-size: 93.75%; }
+body { margin: 0; }
+.layout { display: grid; grid-template-columns: 22rem minmax(0, 1fr); height: 100vh; }
+aside { overflow-y: auto; padding: 1rem; border-right: 1px solid var(--pico-muted-border-color); }
+aside .brand { display: block; margin-bottom: 1rem; text-decoration: none; }
+aside input, aside select { margin-bottom: .5rem; }
+aside ul { padding: 0; margin: 0 0 .5rem; }
+aside li { list-style: none; margin: 0; padding: .1rem 0; font-size: .875rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+aside details { margin-bottom: .25rem; }
+aside details summary { font-size: .875rem; }
+aside details details { margin-left: .75rem; }
+main { overflow-y: auto; padding: 1.5rem 2rem 4rem; }
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; height: auto; }
+  aside { max-height: 45vh; border-right: 0; border-bottom: 1px solid var(--pico-muted-border-color); }
+  main { padding: 1rem; }
+}
+
+.kind { display: inline-block; font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .03em;
+  padding: .05rem .35rem; border-radius: .25rem; vertical-align: middle; color: var(--pico-contrast-inverse);
+  background: var(--pico-secondary); }
+.kind.k-el { background: #2a7ab0; }
+.kind.k-ct { background: #8a5a9e; }
+.kind.k-st { background: #3b8a5a; }
+.kind.k-gr { background: #b07a2a; }
+.kind.k-ag, .kind.k-at { background: #9e5a5a; }
+li .kind { width: 1.6rem; text-align: center; margin-right: .35rem; }
+
+.muted, .doc { color: var(--pico-muted-color); }
+.doc { font-size: .8125rem; }
+.docblock { white-space: pre-line; }
+.builtin { font-size: .8125rem; }
+table.xsd { font-size: .875rem; }
+table.xsd td, table.xsd th { padding: .3rem .5rem; vertical-align: top; }
+table.xsd td.nm { padding-left: calc(.5rem + var(--d, 0) * 1.4rem); white-space: nowrap; }
+table.xsd td.nm.mand { font-weight: 700; }
+table.xsd td.occ { white-space: nowrap; font-family: var(--pico-font-family-monospace); }
+table.xsd tr.struct td { font-style: italic; }
+table.xsd tr.sect td { font-weight: 600; background: var(--pico-card-sectioning-background-color); }
+.facts th { width: 12rem; }
+.reflist a { white-space: nowrap; }
+.legend { font-size: .8125rem; }
+table.xsd code { padding: .05rem .3rem; }
+table.xsd tr.note td { font-style: italic; color: var(--pico-muted-color); }
+table.xsd td.br { white-space: nowrap; }

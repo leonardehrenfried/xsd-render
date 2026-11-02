@@ -1,0 +1,17 @@
+[package]
+name = "xsd-viewer"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Generates a single, self-contained HTML page documenting a (large) XML Schema, e.g. NeTEx"
+license = "MIT"
+readme = "README.md"
+keywords = ["xsd", "xml-schema", "documentation", "netex", "html"]
+categories = ["command-line-utilities", "development-tools", "parser-implementations"]
+include = ["src/**/*", "assets/**/*", "README.md", "LICENSE"]
+
+[dependencies]
+anyhow = "1.0.104"
+roxmltree = "0.21.2"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
