@@ -57,3 +57,5 @@ $(addprefix siri-,$(SIRI_BRANCHES)): siri-%: $(BIN)
 	$(BIN) build/siri-$*/xsd/siri.xsd -t "SIRI $* XML Schema" -o build/www/siri/$*/index.html \
 		-e build/siri-$*/examples -u $(SIRI_REPO)/blob/$(call siri_ref,$*)/examples
 	rsync --info=progress2 --perms --chmod=D755,F644 --relative build/www/./siri/$*/index.html $(UPLOAD)
+
+transmodel: siri-branches netex-branches
